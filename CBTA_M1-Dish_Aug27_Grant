@@ -1,0 +1,50 @@
+# Packages
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Dish Database
+dishdata = pd.read_excel("C:/Users/HP/Downloads/M1_Dish.xlsx", "Database")
+
+# How many records are in this dataset?
+recordcount = len(recordcount)
+print(recordcount)
+
+# What is the highest price in the dataset?
+maxprice = dishdata['PRICE'].max()
+print(maxprice)
+
+# Gopal is concerned about data quality. He wants to know which columns contain blank cells, and how many does it contain.
+blank_cells_count = dishdata.isna().sum()
+print(blank_cells_count[blank_cells_count > 0])
+
+# The company is anticipating a shortage of some of its raw materials, which could impact SUNLIGHT GEL 2.49. He wants to take a closer look at it. How many records in the dataset pertain to the description SUNLIGHT GEL 2.49?
+sunlightgelcount = len(dishdata[dishdata['DESCRIP'] == 'SUNLIGHT GEL 2.49'])
+print(sunlightgelcount)
+
+# Create a histogram of the PRICE variable. What insights can you gain from it?
+plt.hist(dishdata['PRICE'], bins = 25)
+plt.title('Price Distribution Across Products')
+plt.xlabel('Price')
+plt.ylabel('Price Count')
+plt.show()
+
+# What is the average price?
+averageprice = dishdata['PRICE'].mean()
+print(round(averageprice,2))
+
+correctavg = dishdata[dishdata['PRICE'] > 0]['PRICE'].mean()
+print(round(correctavg,2))
+
+# Are higher-priced products generally more profitable?
+plt.scatter(dishdata['PRICE'], dishdata['PROFIT'])
+plt.show()
+
+newdishdata = dishdata[dishdata['MOVE'] > 0]
+newdishdata['PRICE'].corr(newdishdata['PROFIT'])
+
+# In week 387, which stores had an average profit over 18?
+week387 = dishdata[dishdata['WEEK'] == 387]
+avgprofit = week387.groupby('STORE')['PROFIT'].mean()
+highprofitstores = avgprofit[avgprofit > 18]
+print(highprofitstores)
